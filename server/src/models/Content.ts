@@ -1,39 +1,35 @@
 import mongoose, { Mongoose, Schema } from "mongoose";
 import { required } from "zod/mini";
 
-const ContentSchema = new Schema({
-
-
-    title:{
-
-        type:String,
-        required:true
+const ContentSchema = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    link: {
+      type: String,
+      required: true,
     },
 
-    userId:{
-
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"User",
-        required:true
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
 
-    tag:{
-
-        type:String,
-        default:null
-
+    tag: {
+      type: String,
+      default: null,
     },
 
-    types:{
+    types: {
+      type: String,
+      default: "youtube",
+    },
+  },
 
-        type:String,
-        default:"youtube"
-
-    }
-
-},
-
-{timestamps:true}
+  { timestamps: true },
 );
 
-export const ContentModel = mongoose.model("Content",ContentSchema)
+export const ContentModel = mongoose.model("Content", ContentSchema);
