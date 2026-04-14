@@ -16,7 +16,7 @@ export const authmiddleware = (req: AuthRequest, res: Response, next: NextFuncti
 
     const authHeader = req.headers.authorization;
 
-    if(!authHeader || !authHeader.startsWith("Bearer")){
+    if(!authHeader || !authHeader.startsWith("Bearer ")){
 
       return res.status(401).json({
         message: "Authorization token is missing",
@@ -24,7 +24,7 @@ export const authmiddleware = (req: AuthRequest, res: Response, next: NextFuncti
     }
 
 
-    const token = authHeader.split("")[1];
+    const token = authHeader.split(" ")[1];
 
     const  decoded = jwt.verify(
       token as string ,
@@ -41,7 +41,7 @@ export const authmiddleware = (req: AuthRequest, res: Response, next: NextFuncti
 
     return res.status(401).json({
 
-      meassage:"Invalid token"
+      message:"Invalid token"
     })
 
   }
