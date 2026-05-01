@@ -3,25 +3,29 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-export const connectDB = async () =>{
+let isConnected = false;
+let connectionPromise: Promise<typeof mongoose> | null = null;
 
-    try{
+export const connectDB = async () => {
+  if (isConnected) {
+    return;
+  }
 
-        await mongoose.connect( process.env.MONGO_URL as string);
+  if (!process.env.MONGO_URL) {
+    throw new Error("MONGO_URL is not set");
+  }
 
-        console.log(" Db connect")
-
-    }catch(error){
-
-
-        console.error("Mongo DB connection failed!", error)
-
-        process.exit(1)
-
-
-
-
-
-
+  try {
+    if (!connectionPromise) {
+      connectionPromise = mongoose.connect(process.env.MONGO_URL);
     }
-}
+
+    await connectionPromise;
+    isConnected = true;
+    console.log("DB connected");
+  } catch (error) {
+    connectionPromise = null;
+    console.error("Mongo DB connection failed!", error);
+    throw error;
+  }
+};
